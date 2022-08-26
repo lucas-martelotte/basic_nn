@@ -14,17 +14,14 @@ def test_layer_constructor():
     assert isinstance(layer.activation, ReLu)
     assert layer.n_inputs == 3
     assert layer.n_neurons == 4
-    assert np.shape(layer.weights) == (4, 4)
+    assert np.shape(layer.weights) == (4, 3)
 
 
-def test_layer_forward():
+def test_layer_reset_weights():
     """
-    Layer should only multiply the input by
-    the weights and add the bias when forward is called.
+    Layer's weights should be different after calling reset_weights.
     """
-    layer = Layer((2, 3), ReLu())
-    layer.weights = np.array([[1, 2, 3, 4], [3, -2, 2, 1]])
-    input_vector = np.array([1, 5, -2])
-    expected_test_output = np.array([9, -10])
-    actual_test_output = layer.forward(input_vector)
-    assert np.array_equal(actual_test_output, expected_test_output)
+    layer = Layer((4, 3), ReLu())
+    before_weights = layer.weights.copy()
+    layer.reset_weights()
+    assert not np.array_equal(layer.weights, before_weights)
