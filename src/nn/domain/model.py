@@ -10,11 +10,18 @@ class Model:
     def load(self):
         pass
 
-    def run(self, input_vector):
-        output_vector = input_vector.copy()
+    def run(self, input_batch):
+        output_batch = np.transpose(input_batch.copy())
         for layer in self.layers:
-            output_vector = np.dot(layer.weights, output_vector) + layer.bias
-        return output_vector
+            output_batch = np.add(np.dot(layer.weights, output_batch), layer.bias)
+        return np.transpose(output_batch)
+
+    def test(self):
+        testing_results = np.argmax(self.run(self.repository.test_inputs), axis=1)
+        correct = sum(
+            int(x == y) for (x, y) in zip(self.repository.test_outputs, testing_results)
+        )
+        return correct / self.repository.test_outputs.shape[0]
 
     def reset_weights(self):
         for layer in self.layers:

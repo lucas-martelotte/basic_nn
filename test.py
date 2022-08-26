@@ -20,7 +20,12 @@ model = Model(
     MeanSquaredError(),
 )
 
-input_vector = repository.train_inputs[0]
-print(f"Input: {input_vector}")
-output_vector = model.run(input_vector)
-print(f"Output: {output_vector}")
+# input_vector = repository.train_inputs[0]
+# print(f"Input: {input_vector}")
+# output_vector = model.run(input_vector)
+# print(f"Output: {output_vector}")
+
+print("Testing random weights...")
+for i in range(10):
+    print(f"Test {i+1} Accuracy: {model.test()}")
+    model.reset_weights()
